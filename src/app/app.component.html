@@ -1,0 +1,42 @@
+<div class="container" appDragon (fileDropped)="onFileDropped($event)">
+
+  <input type="file" #fileDropRef id="fileDropRef" multiple (change)="fileBrowseHandler($event)" />
+  <img src="https://img.icons8.com/wired/512/upload.png" width="100px" height="80px" alt="">
+  <h3>Drag and drop file here</h3>
+  <h3>or</h3>
+  <label for="fileDropRef">Browse for file</label>
+
+</div>
+
+<div class="btn">
+
+  <button class="button button1" (click)="onUpload()">upload a file</button>&nbsp;&nbsp;
+
+  <button class="button button2" (click)="completeUpload()">Complete MultiPart Upload</button>
+
+</div>
+
+<div class="files-list">
+
+  <div class="single-file" *ngFor="let file of files; let i = index">
+
+    <img src="https://img.icons8.com/material-outlined/512/selective-highlighting.png" width="45px" alt="file">
+
+    <div class="info">
+
+      <h4 class="name">
+        {{ file?.name }}
+      </h4>
+      <p class="size">
+        {{ formatBytes(file?.size) }}
+      </p>
+      <app-process [process]="file?.process"></app-process>
+
+    </div>
+
+    <img src="https://img.icons8.com/color/512/delete-forever.png" class="delete" width="35px" alt="file"
+      (click)="deleteFile(i)">
+
+  </div>
+
+</div>
