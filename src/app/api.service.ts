@@ -25,34 +25,22 @@ export class ApiService {
   files: any[] = [];
 
   constructor(private http: HttpClient) { }
-  
+
 
   /**
    * Initiate a multipart upload.
    *
    * @param params
    */
-  
+
   genarateUploadId(payload: any) {
-  //    this.files
-  //    const httpParams = new HttpParams()
-  //     .set('fileName', encodeURIComponent(params.fileName))
-  //     .set('fileType', encodeURIComponent(params.fileType));
- 
-  //     return this.http.get((this.Uploadurl), {params: httpParams}).toPromise();
-  //     /**
-  //  * Upload MultiPart.
-  //  *
-  //  * @param file
-  //  * @param tokenEmit
-  //  */   
-    
- return this.http.post(this.Uploadurl, payload).pipe(retry({delay: (value: any) => timer(1000)}));
-    
+
+    return this.http.post(this.Uploadurl, payload).pipe(retry({ delay: (value: any) => timer(1000) }));
+
   }
 
   saveParts(payload: any) {
-    return this.http.post(this.Uploadurl2, payload).pipe(retry({delay: (value: any) => timer(1000)}));
+    return this.http.post(this.Uploadurl2, payload).pipe(retry({ delay: (value: any) => timer(1000) }));
   }
 
   completePartUpload(payload: any) {

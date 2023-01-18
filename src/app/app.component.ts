@@ -28,7 +28,7 @@ export class AppComponent {
   buttonDisabledComp = true;
 
   //multipart
-  size: any =[];
+  size: any = [];
 
   private Uploadurl = 'https://hru3pla4ak.execute-api.us-east-1.amazonaws.com/dev/multipart/create'
 
@@ -42,9 +42,9 @@ export class AppComponent {
   }
 
   fileBrowseHandler(event: any) {
-    
+
     this.prepareFilesList(event.target.files);
-    const body = { fileName: this.file_name}
+    const body = { fileName: this.file_name }
 
     this.apiService.genarateUploadId(body).subscribe((res: any) => {
       this.apiService.upload_ID = res.data.upload_id;
@@ -55,12 +55,12 @@ export class AppComponent {
   }
 
 
- onUpload() {
-    for (let i = 1; i <= this.filesBlobs.length ; i++) {
+  onUpload() {
+    for (let i = 1; i <= this.filesBlobs.length; i++) {
       // this.part++;
       // if (!this.uploadIDGenerated) {
       //   const body = { fileName: this.file_name}
-        
+
 
       //   this.uploadIDGenerated = true;
       //   this.apiService.genarateUploadId(body).subscribe((res: any) => {
@@ -71,8 +71,8 @@ export class AppComponent {
 
 
       // } else {
-        // let partNum = this.part
-        this.uploadParts(this.file_name, i, this.filesBlobs[i - 1]);
+      // let partNum = this.part
+      this.uploadParts(this.file_name, i, this.filesBlobs[i - 1]);
       // }
     }
   }
@@ -82,10 +82,10 @@ export class AppComponent {
     let blobFile = blob;
     const payLoad = { filename: file_name, part_number: partNum, upload_id: this.apiService.upload_ID };
     // console.log(this.apiService.upload_ID)
-    this.apiService.saveParts(payLoad).subscribe((res:any) => {
+    this.apiService.saveParts(payLoad).subscribe((res: any) => {
       // it should returns preSigned Url
       // console.log(partNum);
-      this.gernarateEtag(res.data.url, {filename: file_name, part_number: part, upload_id: this.apiService.upload_ID}, blobFile)
+      this.gernarateEtag(res.data.url, { filename: file_name, part_number: part, upload_id: this.apiService.upload_ID }, blobFile)
     })
   }
 
@@ -97,31 +97,31 @@ export class AppComponent {
     // console.log(FILE_CHUNK_SIZE, fileSize, NUM_CHUNKS)
     let start, end, blob;
 
-      let uploadPartsArray = [];
-      let countParts = 0;
+    let uploadPartsArray = [];
+    let countParts = 0;
 
-      let orderData = [];
+    let orderData = [];
 
-      for (let index = 1; index < NUM_CHUNKS + 1; index++) {
-        start = (index - 1) * FILE_CHUNK_SIZE;
-        end = (index) * FILE_CHUNK_SIZE;
-        blob = (index < NUM_CHUNKS) ? file[0].slice(start, end) : file[0].slice(start);
-        uploadPartsArray.push(blob);
-      }
-      console.log(uploadPartsArray);
-      this.filesBlobs = uploadPartsArray;
+    for (let index = 1; index < NUM_CHUNKS + 1; index++) {
+      start = (index - 1) * FILE_CHUNK_SIZE;
+      end = (index) * FILE_CHUNK_SIZE;
+      blob = (index < NUM_CHUNKS) ? file[0].slice(start, end) : file[0].slice(start);
+      uploadPartsArray.push(blob);
+    }
+    console.log(uploadPartsArray);
+    this.filesBlobs = uploadPartsArray;
   }
 
-  gernarateEtag(url:any, payLoad:any, blob: any){
+  gernarateEtag(url: any, payLoad: any, blob: any) {
     // const httpParams = new HttpParams()
     // .set('fileName', this.file_name)
     // .set('fileType', '')
     // .set('partNumber', payLoad.part_number)
     // .set('uploadId', this.apiService.upload_ID);
     let pay_load: any = {}
-    pay_load = {...payLoad, ...blob}
+    pay_load = { ...payLoad, ...blob }
     // console.log( blob)
-    this.http.put(url, pay_load, {observe: 'response'}).subscribe((res)=>{
+    this.http.put(url, blob, { observe: 'response' }).subscribe((res) => {
       let Etag: any = res.headers.get('Etag');
       this.part++;
       // Etag.substr(1, Etag.length-1)
@@ -129,24 +129,24 @@ export class AppComponent {
       eT.pop();
       eT.shift();
       eT = eT.join('');
-      this.parts.push({part_number: payLoad.part_number, etag: eT});
+      this.parts.push({ part_number: payLoad.part_number, etag: eT });
       if (this.part == this.filesBlobs.length) {
         this.buttonDisabledComp = false;
       }
       // console.log(Etag, eT, this.parts);
     })
   }
-
+  
   completeUpload() {
     this.parts = this.parts.sort((a: any, b: any) => a.part_number - b.part_number);
     // console.log(this.parts);
-    const payLoad = {filename: this.files[0].name, parts: this.parts, upload_id: this.apiService.upload_ID}
+    const payLoad = { filename: this.files[0].name, parts: this.parts, upload_id: this.apiService.upload_ID }
     this.apiService.completePartUpload(payLoad).subscribe((res) => {
-    // complete upload
-    // console.log(res);
-    this.part = 0;
-    this.uploadIDGenerated = false;
-    this.apiService.upload_ID = '';
+      // complete upload
+      // console.log(res);
+      this.part = 0;
+      this.uploadIDGenerated = false;
+      this.apiService.upload_ID = '';
     });
   }
 
@@ -195,7 +195,7 @@ export class AppComponent {
     this.getSplittedData(this.files);
     this.uploadFilesSimulator(0);
     // setTimeout(() => {
-      // console.log(this.splitFiles);
+    // console.log(this.splitFiles);
     // });
     return this.files
   }
