@@ -10,9 +10,9 @@
 
 <div class="btn">
 
-  <button class="button button1" (click)="onUpload()">upload a file</button>&nbsp;&nbsp;
+  <button class="button button1" (click)="onUpload()" [disabled]="buttonDisabled">upload a file</button>&nbsp;&nbsp;
 
-  <button class="button button2" (click)="completeUpload()">Complete MultiPart Upload</button>
+  <button class="button button2" (click)="completeUpload()" [disabled]="buttonDisabledComp">Complete MultiPart Upload</button>
 
 </div>
 
@@ -40,3 +40,5 @@
   </div>
 
 </div>
+
+<!-- <mb-large-files-uploader #splitFiles title="Lable for upload" [canUpload]="true" [_attachments]="files" (updatedAttachmentsEmitter)="getSplittedData($event)"></mb-large-files-uploader> -->
